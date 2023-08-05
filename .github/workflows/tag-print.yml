@@ -3,7 +3,7 @@ name: Create New Tag
 on:
   workflow_run:
     workflows: 
-      - "Check Latest Tag"
+      - "mongodump"
     types: 
       - completed
 
@@ -37,14 +37,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: tags
-      id: tag
-      run: |
-        TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
-        echo "::set-output name=tag::$TAG"
+      - name: Get the Branch name
+        id: tag
+        run: |
+          TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
+          echo "::set-output name=tag::$TAG"
 
       - name: Build and push
         env:
