@@ -3,7 +3,7 @@ name: Check Latest Tag
 on:
   push:
     branches:
-      - '*'
+      - '**'
 
 jobs:
   build:
@@ -21,8 +21,3 @@ jobs:
 
       - name: Display Latest Tag
         run: echo "Latest tag is ${{ steps.latest_tag.outputs.tag }}"
-
-#      - name: Create and Push Tag
-#        run: |
-#          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-#          echo ${LATEST_TAG}
