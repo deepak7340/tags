@@ -15,13 +15,6 @@ jobs:
         with:
           fetch-depth: 0
         
-      - name: Set up Git
-        run: |
-          git config --global user.name "Deepak tiwari"
-          git config --global user.email "deepak@gmail.com"
-        
       - name: Create and Push Tag
         run: |
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          git tag $LATEST_TAG
-          git push origin $LATEST_TAG
