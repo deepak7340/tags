@@ -18,11 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: tags
-        id: tag
-        run: |
-          TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
-          echo "::set-output name=tag::$TAG"
+      - name: Get Latest Tag
+        id: latest_tag
+        run: echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
 
   build_other_branches:
     if: github.ref != 'refs/heads/master'
@@ -32,8 +30,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Extract metadata (tags, labels) for image
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ matrix.image }}
+
       - name: Get the Branch name
         id: tag
         run: |
-          TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
-          echo "::set-output name=tag::$TAG"
+          TAG=$"(echo "${{ steps.meta.outputs.tags }}")"
+          echo "::set-output name=tag::${TAG}"
