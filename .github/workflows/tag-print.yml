@@ -42,9 +42,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: tag
+    - name: tags
       id: tag
       run: |
         TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
         echo "::set-output name=tag::$TAG"
+
+      - name: Build and push
+        env:
+          TAG: ${{ steps.tag.outputs.TAG }}
+        run: |   
         echo "Building Docker image with tag: $TAG"
