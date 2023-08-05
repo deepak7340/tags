@@ -50,4 +50,4 @@ jobs:
         env:
           TAG: ${{ steps.tag.outputs.TAG }}
         run: |   
-        echo "Building Docker image with tag: $TAG"
+          echo "Building Docker image with tag: ${TAG}"
