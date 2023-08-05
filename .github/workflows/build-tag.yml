@@ -3,7 +3,7 @@ name: Build and Tag
 on:
   push:
     branches:
-      - master
+      - '*'
 
 jobs:
   build:
