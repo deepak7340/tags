@@ -1,4 +1,4 @@
-name: mongodump
+name: mongodump1
 
 on:
   - push
