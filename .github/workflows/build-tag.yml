@@ -1,0 +1,25 @@
+name: Build and Tag
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up Git
+        run: |
+          git config --global user.name "Deepak tiari"
+          git config --global user.email "deepak@gmail.com"
+        
+      - name: Create and Push Tag
+        run: |
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          git tag $LATEST_TAG
+          git push origin $LATEST_TAG
