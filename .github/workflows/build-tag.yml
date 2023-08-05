@@ -1,4 +1,4 @@
-name: Build and Tags
+name: Check Latest Tag
 
 on:
   push:
@@ -14,8 +14,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-        
-      - name: Create and Push Tag
-        run: |
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo ${LATEST_TAG}
+    
+      - name: Get Latest Tag
+        id: latest_tag
+        run: echo "::set-output name=tag::$(git describe --abbrev=0 --tags)"
+
+      - name: Display Latest Tag
+        run: echo "Latest tag is ${{ steps.latest_tag.outputs.tag }}"
+
+#      - name: Create and Push Tag
+#        run: |
+#          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+#          echo ${LATEST_TAG}

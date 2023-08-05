@@ -1,0 +1,48 @@
+name: Create New Tag
+
+on:
+  workflow_run:
+    workflows: ["Check Latest Tag"]
+    types:
+      - completed
+
+jobs:
+  build_master:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Increment Tag and Create New Tag
+        id: increment_tag
+        run: |
+          latest_tag=${{ github.event.workflow_run.outputs.tag }}
+          # Extract the numeric part of the tag and increment it
+          tag_number=$(echo "$latest_tag" | sed 's/v//')
+          new_tag_number=$((tag_number + 1))
+          new_tag="v$new_tag_number"
+          git tag $new_tag
+          echo "::set-output name=new_tag::$new_tag"
+
+      - name: Push New Tag
+        run: |
+          new_tag=${{ steps.increment_tag.outputs.new_tag }}
+          git push origin $new_tag
+
+  build_other_branches:
+    if: github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get current branch name
+      env:
+        BRANCH_NAME: ${{ github.ref_slug }}
+      run: |
+        TAG=${BRANCH_NAME/\//-} # Replace "/" with "-" in branch name
+
+        echo "Building Docker image with tag: $TAG"
