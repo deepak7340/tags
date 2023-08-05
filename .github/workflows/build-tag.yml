@@ -12,10 +12,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+        fetch-depth: 0
         
       - name: Set up Git
         run: |
-          git config --global user.name "Deepak tiari"
+          git config --global user.name "Deepak tiwari"
           git config --global user.email "deepak@gmail.com"
         
       - name: Create and Push Tag
