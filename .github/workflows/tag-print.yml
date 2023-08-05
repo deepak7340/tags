@@ -1,10 +1,13 @@
 name: Create New Tag
 
 on:
-  workflow_run:
-    workflows: ["Check Latest Tag"]
-    types:
-      - completed
+  push:
+    path:
+      - "./deepak/**"
+
+#  workflow_run:
+#    workflows: ["Check Latest Tag"]
+#    types: [completed]
 
 jobs:
   build_master:
