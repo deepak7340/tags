@@ -42,10 +42,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get current branch name
-      env:
-        BRANCH_NAME: ${{ github.ref_slug }}
+    - name: tag
+      id: tag
       run: |
-        TAG=${BRANCH_NAME/\//-} # Replace "/" with "-" in branch name
-
+        TAG=$(echo "${{ github.ref }}" | sed -e "s/refs\/tags\///")"
+        echo "::set-output name=tag::$TAG"
         echo "Building Docker image with tag: $TAG"
